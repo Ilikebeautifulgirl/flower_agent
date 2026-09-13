@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌸 花事成双 AI Agent
+# 🌸 花小满 AI Agent
 
 **基于 LangGraph + MCP + RAG 的鲜花批发商城多智能体客服系统**
 
