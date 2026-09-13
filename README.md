@@ -29,11 +29,11 @@
 
 | 配花过程（Agent 实时思考） | 配花方案结果（可一键加购） |
 |---------------------------|---------------------------|
-| ![配花过程](screenshots/florist_process.png) | ![配花方案](screenshots/bouquet_result.png) |
+| ![配花过程](florist_process.png) | ![配花方案](bouquet_result.png) |
 
 | 红玫瑰求婚方案 + 热销推荐 | 登录页 |
 |--------------------------|--------|
-| ![推荐商品](screenshots/bouquet_recommend.png) | ![登录页](screenshots/login.png) |
+| ![推荐商品](bouquet_recommend.png) | ![登录页](login.png) |
 
 ---
 
