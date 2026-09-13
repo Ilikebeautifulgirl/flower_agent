@@ -1,0 +1,45 @@
+# 阶段 12：一键启动项目依赖的全部中间件
+# 使用方式：docker compose up -d   （停止：docker compose down）
+services:
+  # ---------- MySQL：订单 + 实例监控数据 ----------
+  mysql:
+    image: mysql:8.0
+    container_name: my-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: change_me_to_your_password
+      MYSQL_DATABASE: flower_cloud        # 容器首次启动时自动建库
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - mysql_data:/var/lib/mysql          # 数据持久化：容器删了数据不丢
+    restart: unless-stopped                 # Docker 重启后自动拉起
+
+  # ---------- Redis：短期对话记忆 ----------
+  redis:
+    image: redis:7
+    container_name: my-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  # ---------- Neo4j：知识图谱 ----------
+  neo4j:
+    image: neo4j:5
+    container_name: my-neo4j
+    ports:
+      - "7474:7474"                        # 浏览器可视化界面
+      - "7687:7687"                        # Bolt 协议端口（Python 连这个）
+    environment:
+      NEO4J_AUTH: neo4j/change_me_to_your_password
+    volumes:
+      - neo4j_data:/data
+    restart: unless-stopped
+
+# 命名数据卷：由 Docker 管理磁盘位置，各服务重启/重建容器后数据仍在
+volumes:
+  mysql_data:
+  redis_data:
+  neo4j_data:

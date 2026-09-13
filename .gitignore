@@ -1,0 +1,21 @@
+# 环境变量（含 API Key，绝不提交）
+.env
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# FAISS 索引（首次运行自动构建）
+faiss_index/
+
+# 用户上传的图片
+uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
