@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌸 花小满 AI Agent
+# 🌸 花事成双 AI Agent
 
 **基于 LangGraph + MCP + RAG 的鲜花批发商城多智能体客服系统**
 
@@ -9,16 +9,37 @@
 [![LangGraph](https://img.shields.io/badge/LangGraph-0.2+-orange)](https://langchain-ai.github.io/langgraph/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[功能亮点](#功能亮点) · [架构设计](#架构设计) · [技术栈](#技术栈) · [快速开始](#快速开始) · [API 文档](#api-接口)
+[功能亮点](#功能亮点) · [界面预览](#界面预览) · [架构设计](#架构设计) · [技术栈](#技术栈) · [快速开始](#快速开始) · [API 文档](#api-接口)
 
 </div>
 
 ---
 
+## 界面预览
+
+<div align="center">
+
+**AI 对话助手 + 购物车 双栏联动**
+
+![AI对话与购物车](screenshots/chat_cart.png)
+
+</div>
+
+**智能配花 — 从需求到方案的完整过程**
+
+| 配花过程（Agent 实时思考） | 配花方案结果（可一键加购） |
+|---------------------------|---------------------------|
+| ![配花过程](screenshots/florist_process.png) | ![配花方案](screenshots/bouquet_result.png) |
+
+| 红玫瑰求婚方案 + 热销推荐 | 登录页 |
+|--------------------------|--------|
+| ![推荐商品](screenshots/bouquet_recommend.png) | ![登录页](screenshots/login.png) |
+
+---
 
 ## 功能亮点
 
-花小满 AI Agent 是一个面向鲜花批发商城的智能客服系统，采用 **多智能体协作架构**，将复杂的客服任务拆解给不同领域的专业 Agent 协同处理，支持图文多模态输入、对话式下单、智能配花等高级功能。
+花事成双 AI Agent 是一个面向鲜花批发商城的智能客服系统，采用 **多智能体协作架构**，将复杂的客服任务拆解给不同领域的专业 Agent 协同处理，支持图文多模态输入、对话式下单、智能配花等高级功能。
 
 | 功能 | 说明 | 负责 Agent |
 |------|------|-----------|
@@ -110,8 +131,8 @@
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/your-username/flower_agent.git
-cd flower_agent
+git clone https://github.com/your-username/my_flower_agent.git
+cd my_flower_agent
 
 # 2. 配置环境变量
 cp .env.example .env
@@ -126,11 +147,11 @@ pip install -r requirements.txt
 # 5. 初始化数据库
 #    导入 mock 订单数据
 docker cp database/init_mock_data.sql my-mysql:/tmp/init.sql
-docker exec my-mysql sh -c "mysql -uroot -p你的密码 --default-character-set=utf8mb4 flower_cloud < /tmp/init.sql"
+docker exec my-mysql sh -c "mysql -uroot -p你的密码 --default-character-set=utf8mb4 cloud_platform < /tmp/init.sql"
 
 #    导入实例监控数据
 docker cp database/init_instances.sql my-mysql:/tmp/init.sql
-docker exec my-mysql sh -c "mysql -uroot -p你的密码 --default-character-set=utf8mb4 flower_cloud < /tmp/init.sql"
+docker exec my-mysql sh -c "mysql -uroot -p你的密码 --default-character-set=utf8mb4 cloud_platform < /tmp/init.sql"
 
 #    导入产品数据到 MySQL + 生成 RAG 文档
 python database/import_products.py
@@ -155,7 +176,7 @@ python main.py
 ## 项目结构
 
 ```
-flower_agent/
+my_flower_agent/
 ├── api_server.py                  # FastAPI HTTP 服务层（SSE 流式聊天 + 图片上传）
 ├── main.py                         # 命令行交互入口（开发调试用）
 ├── docker-compose.yml              # MySQL + Redis + Neo4j 一键启动
@@ -185,7 +206,7 @@ flower_agent/
 │   └── graph_tool.py               #   Neo4j 知识图谱查询
 │
 ├── mcp_servers/                    # MCP 服务端
-│   └── flower_cloud_server.py    #   封装 MySQL 查询为 MCP 工具
+│   └── cloud_platform_server.py    #   封装 MySQL 查询为 MCP 工具
 │
 ├── database/                       # 数据库脚本与数据
 │   ├── 在售产品列表.csv             #   示例产品数据（35 条）
@@ -194,15 +215,18 @@ flower_agent/
 │   ├── import_products.py          #   CSV → MySQL + 生成 RAG 文档
 │   └── seed_neo4j.py               #   CSV → Neo4j 知识图谱
 │
+├── mock_data/                      # RAG 知识库文档
+│   └── 产品目录_*.md                #   各类花卉产品说明
 │
 ├── faiss_index/                    # FAISS 索引（首次运行自动构建）
 ├── uploads/                        # 用户上传图片
+├── screenshots/                    # 项目截图（README 用）
 │
 └── deploy/                         # 生产部署配置
     ├── deploy.sh                   #   一键部署脚本（Ubuntu）
-    ├── flower_agent.service     #   systemd 进程守护
-    ├── nginx_flower_agent.conf  #   Nginx 反向代理
-    ├── init_flower_shop_db.sql            #   商城库初始化
+    ├── my_flower_agent.service     #   systemd 进程守护
+    ├── nginx_my_flower_agent.conf  #   Nginx 反向代理
+    ├── init_hscs_db.sql            #   商城库初始化
     └── php_token_example.php       #   PHP 端 Token 认证示例
 ```
 
@@ -221,7 +245,7 @@ flower_agent/
 
 ```json
 {
-  "user_id": "10001",
+  "user_id": "11078",
   "session_id": "session_abc123",
   "message": "卡罗拉的花语是什么？",
   "image_url": ""
@@ -250,8 +274,8 @@ SSE 流式返回，事件类型：
 项目提供了完整的生产部署方案：
 
 - **`deploy/deploy.sh`** — Ubuntu 服务器一键部署脚本
-- **`deploy/flower_agent.service`** — Systemd 服务配置，进程守护与自动重启
-- **`deploy/nginx_flower_agent.conf`** — Nginx 反向代理配置（含 SSE 流式支持）
+- **`deploy/my_flower_agent.service`** — Systemd 服务配置，进程守护与自动重启
+- **`deploy/nginx_my_flower_agent.conf`** — Nginx 反向代理配置（含 SSE 流式支持）
 
 ```bash
 # 服务器上一键部署
